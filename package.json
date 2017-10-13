@@ -1,0 +1,15 @@
+{
+    "name": "myip",
+    "version": "0.0.1",
+    "description": "Show public IP of local host",
+    "author": "user",
+    "license": "MIT",
+
+    "main": "index.js",
+    "preferGlobal": true,
+
+    "main": "index.js",
+    "bin": {
+        "myip": "./index.js"
+    }
+}
