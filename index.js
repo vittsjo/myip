@@ -4,34 +4,36 @@ const http = require('http');
 const URL = require('url').URL;
 
 function stringBetween(str, marker1, marker2) {
-    var start = str.indexOf(marker1);
-    var end = str.indexOf(marker2);
+    const start = str.indexOf(marker1);
+    const end = str.indexOf(marker2);
     if (start < 0 || end < 0) {
         return ""
     }
-    start += marker1.length;
-    return str.substring(start, end);
+    return str.substring(start + marker1.length, end);
 }
 
 function fetchExternalIPAddress(pattern, callback) {
-    var url = new URL(pattern.url);
-    var options = {
+    const url = new URL(pattern.url);
+    const options = {
         host: url.hostname,
         port: url.port || 80,
         path: url.path || '/'
     };
 
-    var content = '';
+    let content = '';
     http.get(options, (res) => {
         res.setEncoding('utf-8');
         res.on('data', (chunk) => {
             content += chunk;
         });
         res.on('end', () => {
-            var ipString = stringBetween(content, pattern.startMarker, pattern.endMarker);
+            const ipString = stringBetween(content, pattern.startMarker, pattern.endMarker);
             if (callback !== undefined) {
                 callback(ipString);
             }
+        });
+        res.on('error', (err) => {
+            console.error(err);
         });
     });
 }
